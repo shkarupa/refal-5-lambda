@@ -73,8 +73,10 @@ compile_prefixes() {
 
 compile_dynamic() {
   source ../../scripts/platform-specific.sh
-  OUT=../../../lib${RLC_TARGET:+/$RLC_TARGET}
+  OUT=../../lib${RLC_TARGET:+/$RLC_TARGET}
   mkdir -p "$OUT"
+  # Сборка идёт в подкаталоге tmp
+  OUT=../"$OUT"
   rm -rf tmp
   mkdir -p tmp
   (

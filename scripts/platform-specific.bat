@@ -1,4 +1,4 @@
-@echo offTr
+@echo off
 
 rem Определяет параметры платформы цели:
 rem   TARGET_OS  — Windows, Darwin, Linux или unknown

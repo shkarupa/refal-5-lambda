@@ -1,7 +1,15 @@
 ## MinGW uses Windows DLL API, libdl.a don’t supported on it.
 
+## Платформа определяется по цели: RLC_TARGET, а без него — по хосту.
+TARGET_IS_WINDOWS=false
+if [[ -n "$RLC_TARGET" ]]; then
+  [[ "$RLC_TARGET" == *-windows* ]] && TARGET_IS_WINDOWS=true
+else
+  [[ "$(uname)" =~ MINGW ]] && TARGET_IS_WINDOWS=true
+fi
+
 LIBDL='-ldl'
-if [[ "$(uname)" =~ MINGW || "$RLC_TARGET" == *-windows* ]]; then
+if $TARGET_IS_WINDOWS; then
   LIBDL=''
 fi
 
@@ -56,7 +64,7 @@ fi
 
 
 ## .def file for linking dynamic libraries on MinGW
-if [[ "$(uname)" =~ MINGW || "$RLC_TARGET" == *-windows* ]]; then
+if $TARGET_IS_WINDOWS; then
   DEFFILE="$1/lib/scratch-rt/platform-Windows/lib/refalrts-main.def"
   if [[ ! -e "$DEFFILE" ]]; then
      DEFFILE="$1/../src/lib/platform-Windows/lib/refalrts-main.def"

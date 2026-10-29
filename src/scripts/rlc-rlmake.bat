@@ -38,7 +38,8 @@ setlocal
   if "%~1"=="--debug" ( set DEBUG=TRUE& goto NEXT )
   if "%~1"=="--no-debug" ( set DEBUG=FALSE& goto NEXT )
 
-  if "%~1"=="--target" ( set RLC_TARGET=%~2& shift & goto NEXT )
+  :: У --target два слова, поэтому ARGS обрезается ещё раз здесь, а shift — в NEXT.
+  if "%~1"=="--target" ( set RLC_TARGET=%~2& set ARGS=%ARGS:* =%& shift & goto NEXT )
 
   goto EXIT_LOOP
 
@@ -61,7 +62,7 @@ setlocal
 
   call "%DISTRDIR%\scripts\platform-specific.bat"
 
-  :: Префиксы и библиотеки цели ищутся раньше общих (lib/<triple>[)
+  :: Префиксы и библиотеки цели ищутся раньше общих (lib/<triple>)
   if not "%RLC_TARGET%"=="" (
     if not exist "%LIBDIR%\%RLC_TARGET%\" (
       echo target %RLC_TARGET% is not built, run: set TARGETS=%RLC_TARGET%, then bootstrap.bat 1>&2
